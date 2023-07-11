@@ -23,3 +23,10 @@ resource "aws_instance" "app_server" {
     Name = "Learn-HCP-Packer"
   }
 }
+
+check "ami_version_check" {
+  assert {
+    condition = aws_instance.app_server.ami == data.hcp_packer_image.ubuntu_us_east_2.cloud_image_id
+    error_message = "Must use the latest available AMI, ${data.hcp_packer_image.ubuntu_us_east_2.cloud_image_id}."
+  }
+}
